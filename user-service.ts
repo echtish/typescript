@@ -1,8 +1,5 @@
-// user-service.ts — Code Review Exercise
-//
 // Context: This is a UserService from an internal API. It handles user CRUD
-// operations, caching, and data export. It has been in production for a while
-// and the team has been asked to review it before onboarding new contributors.
+// operations, caching, and data export.
 //
 // Assume standard library types (Request, Response, etc.) are available.
 
