@@ -17,7 +17,7 @@ interface Database {
   execute(sql: string, params?: unknown[]): Promise<{ rowCount: number }>;
 }
 
-// ---- In-memory cache ----
+// In-memory cache
 const userCache: Record<string, User> = {};
 
 export class UserService {
