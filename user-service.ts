@@ -52,17 +52,14 @@ export class UserService {
     email: string;
     role: string;
   }): Promise<User | { error: string }> {
-    // Validate email
     if (!data.email.includes("@")) {
       return { error: "Invalid email" };
     }
 
-    // Validate name
     if (data.name.length < 1 || data.name.length > 200) {
       return { error: "Name must be between 1 and 200 characters" };
     }
 
-    // Validate role
     if (
       data.role !== "admin" &&
       data.role !== "editor" &&
@@ -71,7 +68,6 @@ export class UserService {
       return { error: "Invalid role" };
     }
 
-    // Check for duplicates
     const existing = await this.db.query<User>(
       "SELECT * FROM users WHERE email = $1",
       [data.email]
@@ -86,7 +82,6 @@ export class UserService {
       [id, data.name, data.email, data.role, new Date()]
     );
 
-    // Send welcome email
     try {
       fetch("https://email-service.internal.company.com/api/v1/send", {
         method: "POST",
@@ -98,7 +93,6 @@ export class UserService {
         }),
       });
     } catch (e) {
-      // email sending failed, log it
       console.log("Failed to send welcome email");
     }
 
@@ -148,7 +142,6 @@ export class UserService {
       userId,
     ]);
 
-    // Update cache
     if (userCache[userId]) {
       userCache[userId].role = newRole as User["role"];
     }
@@ -242,16 +235,5 @@ export class UserService {
     }
 
     return deleted;
-  }
-
-  // Validate an incoming request body
-  validateRequest(body: any): boolean {
-    if (!body) return false;
-    if (!body.name) return false;
-    if (!body.email) return false;
-    if (body.email.length > 300) return false;
-    if (typeof body.name !== "string") return false;
-    if (typeof body.email !== "string") return false;
-    return true;
   }
 }
